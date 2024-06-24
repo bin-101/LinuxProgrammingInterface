@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
     close(fd);
 
     {
-        int fd = open("test_full.txt", O_RDONLY);
+        int fd = open("test.txt", O_RDONLY);
         //ファイルホールができているか確認
         lseek(fd, 0, SEEK_SET);
         printf("offset: %ld\n", lseek(fd, 0, SEEK_CUR)); // 0
