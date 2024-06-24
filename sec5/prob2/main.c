@@ -17,6 +17,9 @@ fd=open("test.txt", O_WRONLY | O_APPEND);
 lseek(fd, x, SEEK_SET);
 - x=10,100でも下の出力になった
 - abcdefghijklmnopqrstuvwxyzxy
+
+理由
+O_APPENDを指定すると、末尾への移動と書き込みをアトミックに行うため。
 */
 
 int main(int argc, char *argv[])
