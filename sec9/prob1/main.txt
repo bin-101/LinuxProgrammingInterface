@@ -1,0 +1,38 @@
+real=1000
+effective=0
+saved=0
+filesystem=0
+
+effective=0より、特権プロセス。
+filesystemは通常はeffectiveと等価。
+
+(a) setuid(2000);
+real=2000
+effective=2000
+saved=2000
+filesystem=2000
+
+(b) setreuid(-1, 2000);
+real=1000
+effective=2000
+saved=0 (2000)
+filesystem=2000
+()が正解。
+
+(c) seteuid(2000);
+real=1000
+effective=2000
+saved=0
+filesystem=2000
+
+(d) setfsuid(2000);
+real=1000
+effective=0
+saved=0
+filesystem=2000
+
+(e) setresuid(-1,2000,3000);
+real=1000
+effective=2000
+saved=3000
+filesystem=2000
