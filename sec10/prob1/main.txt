@@ -1,0 +1,11 @@
+sysconf
+- sysconf(int name)で、nameに該当した制限値を入手できる
+- sysconf(_SC_CLK_TCK)で、timesが返すclock_tに関して、何クロックティックが1秒に相当するかを返してくれる
+
+times()の場合
+最大値: 4,294,967,295
+4,294,967,295/100 秒かかる
+
+clock()の場合
+CLOCKS_PER_SEC: 1000000
+4,294,967,295/1000000 秒かかる
