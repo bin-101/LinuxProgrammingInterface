@@ -38,7 +38,7 @@ total : 212
 - section 17 solved: 0 all: 1
 	- :white_medium_square: 17-1 
 - section 18 solved: 5 all: 9
-	- :white_medium_square: 18-1  :white_check_mark: <span style="color: green">18-2</span>  :white_check_mark: <span style="color: green">18-3</span>  :white_medium_square: 18-4  :white_check_mark: <span style="color: green">18-5</span>  :white_medium_square: 18-6  :white_check_mark: <span style="color: green">18-7</span>  :white_medium_square: 18-8  :white_check_mark: <span style="color: green">18-9</span> 
+	- :white_medium_square: 18-1  :white_check_mark: 18-2  :white_check_mark: 18-3  :white_medium_square: 18-4  :white_check_mark: 18-5  :white_medium_square: 18-6  :white_check_mark: 18-7  :white_medium_square: 18-8  :white_check_mark: 18-9 
 - section 19 solved: 0 all: 1
 	- :white_medium_square: 19-1 
 - section 20 solved: 0 all: 4
