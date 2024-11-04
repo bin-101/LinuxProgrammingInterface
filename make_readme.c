@@ -70,9 +70,9 @@ int main(){
     snprintf(status, sizeof(status), "## Status\nsolved: %d\ntotal : %d\n", solved_problems, sum_problems);
     write(fd_readme, status, strlen(status));
 
-    char list[10000]="## List\n";
+    char list[100000]="## List\n";
     for(int i=1;i<=NUM_SECTIONS;i++){
-        char list_sec[1000];
+        char list_sec[10000];
         int solved=0;
         for(int j=1;j<=num_problems[i];j++){
             if(is_solved[i][j]) solved++;
@@ -82,9 +82,9 @@ int main(){
             strcat(list_sec, "\t-");
         }
         for(int j=1;j<=num_problems[i];j++){
-            char temp[100];
+            char temp[1000];
             if(is_solved[i][j]){
-                snprintf(temp, sizeof(temp), " :white_check_mark: %d-%d ", i, j);
+                snprintf(temp, sizeof(temp), " :white_check_mark: <span style=\"color: green\">%d-%d</span> ", i, j);
             }else{
                 snprintf(temp, sizeof(temp), " :white_medium_square: %d-%d ", i, j);
             }
