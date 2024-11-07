@@ -7,11 +7,6 @@
 #include <string.h>
 #define _GNU_SOURCE
 
-/*
-getpwnam(): 
-
-*/
-
 struct passwd *my_getpwnam(const char *name)
 {
     struct passwd *pwd;
