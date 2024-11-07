@@ -8,8 +8,8 @@
 
 /*
 実行結果
-```shell
-~~(略)~~
+```
+~~略~~
 0x7f309f2e1a60 0x7f309f2e1a60
 root root
 bin101 bin101
