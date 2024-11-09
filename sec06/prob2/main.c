@@ -5,13 +5,12 @@
 
 /*
 実行結果
-```shell
+bin101@bin101-Inspiron-16-5635:~/code/LinuxProgrammingInterface/sec06/prob2$ ./a.out
 f
 f
-Segmentation fault
-```
+Segmentation fault (コアダンプ)
 */
-static jmp_buf env;
+jmp_buf env;
 
 int f(){
     setjmp(env);
