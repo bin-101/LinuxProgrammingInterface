@@ -15,11 +15,10 @@ filesystem=2000
 (b) setreuid(-1, 2000);
 real=1000
 effective=2000
-saved=0 (2000)
+saved=2000 // realと2000が異なるためsavedも変更する
 filesystem=2000
-()が正解。
 
-(c) seteuid(2000);
+(c) seteuid(2000); seteuidが変更するのはeffectiveのみ
 real=1000
 effective=2000
 saved=0
