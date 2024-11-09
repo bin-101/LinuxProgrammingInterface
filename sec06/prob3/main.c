@@ -4,53 +4,47 @@
 #include <setjmp.h>
 
 /*
-getenv(): 
-putenv(): 
-
 setenv(char *name,char *value,int overwrite)
-    putenv(name=value)
-    getenvで存在するかしないかを判定できるのでそれを使う
+    overwirte=0以外: putenv(name=value)
+    overwirte=0: getenvで存在するかしないかを判定し、存在しなければputenv(name=value)
 unsetenv(const char *name)
-    putenv(name)
-    getenvで存在するかしないかを判定できるのでそれを使う
+    getenvで存在するかしないかを判定し、存在すればputenv(name=value)
 */
 
 extern char **environ;
 
 int my_setenv(const char *name,const char *value,int overwrite)
 {
-    char *name_value;
-    snprintf(name_value,256,"%s=%s",name,value);
-    printf("%s\n",name_value);
+    char name_value[1000];
+    snprintf(name_value,sizeof(name_value),"%s=%s",name,value);
     if(overwrite){
         int ret=putenv(name_value);
         if(ret!=0){
-            return ret=-1;
+            return -1;
         }
-        return ret;
+        return 0;
     }
     if(getenv(name)==NULL){ //環境にnameが存在しない
         int ret=putenv(name_value);
         if(ret!=0){
-            ret=-1;
+            return -1;
         }
-        return ret;
+        return 0;
     }
-    printf("xxxxxxxx\n");
     // overwrite=0で環境にnameが存在する場合
-    return -1;
+    return 0;
 }
 
 int my_unsetenv(char *name)
 {
     if(getenv(name)==NULL){ //環境にnameが存在しない
-        return -1;
+        return 0;
     }
     int ret=putenv(name);
     if(ret!=0){
-        ret=-1;
+        return -1;
     }
-    return ret;
+    return 0;
 }
 
 void print_env()
@@ -67,12 +61,12 @@ int main(int argc, char *argv[])
     print_env();
     char *name="name1";
     char *value="value1";
+    
     my_setenv(name,value,1);
-    printf("-1\n");
-    printf("setenv\n");
+    printf("\nsetenv\n");
     print_env();
+
     my_unsetenv(name);
     printf("\nunsetenv\n\n");
     print_env();
-    return 0;
 }
