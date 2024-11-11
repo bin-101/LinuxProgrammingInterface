@@ -1,6 +1,24 @@
 #define _GNU_SOURCE
 #include <signal.h>
 #include <stdio.h>
+#include <string.h>
+#include <errno.h>
+
+/*
+実行結果
+bin101@bin101-Inspiron-16-5635:~/code/LinuxProgrammingInterface/sec20/prob2$ ./a.out 
+2 is not pending
+2 is not pending
+^C2 is pending
+2 is pending
+2 is pending
+2 is pending
+2 is pending
+2 is pending
+2 is pending
+2 is pending
+2 is not pending
+*/
 
 void check_pending(int sig)
 {
@@ -20,7 +38,7 @@ int main(int argc, char *argv[])
     sigaddset(&sigset, SIGINT); //SIGINT: 割り込み処理(ctrl+c)
     int x=sigprocmask(SIG_BLOCK, &sigset, NULL);
     if(x==-1){
-        perror("sigprocmask");
+        printf("sigprocmask: %s\n", strerror(errno));
     }
     for(int i=0;i<10;i++){
         check_pending(SIGINT);
