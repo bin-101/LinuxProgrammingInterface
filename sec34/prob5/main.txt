@@ -1,0 +1,3 @@
+raise(SIGTSTP)の実行前にSIGTSTPを再度受信し、実行停止したとする。
+その場合、SIGCONTを受信して実行を再開しても、次のraise(SIGTSTP)ですぐに実行停止してしまう。
+もとの場合は、raise(SIGTSTP)を実行後にアンブロックしているため、SIGTSTPを2度受け取ることはない。
