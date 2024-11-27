@@ -1,3 +1,2 @@
-res=1
+writeprintf
 printf
-write
