@@ -1,6 +1,6 @@
 # The Linux Programming Interface Problems
 ## Status
-solved: 59
+solved: 60
 total : 212
 ## List
 - section 1 solved: 0 all: 0
@@ -119,8 +119,8 @@ total : 212
 	- :white_check_mark: 57-1  :white_check_mark: 57-2  :white_medium_square: 57-3  :white_medium_square: 57-4 
 - section 58 solved: 0 all: 0
 
-- section 59 solved: 1 all: 5
-	- :white_medium_square: 59-1  :white_check_mark: 59-2  :white_medium_square: 59-3  :white_medium_square: 59-4  :white_medium_square: 59-5 
+- section 59 solved: 2 all: 5
+	- :white_medium_square: 59-1  :white_check_mark: 59-2  :white_medium_square: 59-3  :white_check_mark: 59-4  :white_medium_square: 59-5 
 - section 60 solved: 0 all: 2
 	- :white_medium_square: 60-1  :white_medium_square: 60-2 
 - section 61 solved: 0 all: 6
