@@ -49,6 +49,7 @@ void child_process(){
         perror("flock");
         exit(1);
     }
+    sleep(1); // 親プロセスのflock(fd_a,LOCK_EX)を先に行う
     if(flock(fd_a,LOCK_EX)==-1){
         perror("flock");
         exit(1);
