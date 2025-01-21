@@ -1,55 +1,67 @@
-// teeコマンドを実装する
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <stdlib.h>
 
-int main(int argc, char *argv[])
-{
-    int i, opt;
+/*
+実行結果
+bin101@bin101-Inspiron-16-5635:~/code/LinuxProgrammingInterface/sec04/prob1$ ./a.out output.txt <input.txt
+TEE(1)                                                                                             User Commands                                                                                            TEE(1)
 
-    opterr = 0; // getopt()のエラーメッセージを無効にする。
-    int ex_a = 0;
+NAME
+       tee - read from standard input and write to standard output and files
+bin101@bin101-Inspiron-16-5635:~/code/LinuxProgrammingInterface/sec04/prob1$ gcc main.c
+bin101@bin101-Inspiron-16-5635:~/code/LinuxProgrammingInterface/sec04/prob1$ ./a.out output_a.txt -a <input.txt
+option a
+TEE(1)                                                                                             User Commands                                                                                            TEE(1)
 
-    while ((opt = getopt(argc, argv, "a")) != -1)
-    {
-        // コマンドライン引数のオプションがなくなるまで繰り返す
-        switch (opt)
-        {
-        case 'a':
-            printf("-aがオプションとして渡されました\n");
-            ex_a = 1;
-            break;
+NAME
+       tee - read from standard input and write to standard output and files
+bin101@bin101-Inspiron-16-5635:~/code/LinuxProgrammingInterface/sec04/prob1$ ./a.out output_a.txt -a <input.txt
+option a
+TEE(1)                                                                                             User Commands                                                                                            TEE(1)
 
-        default: /* '?' */
-            // 指定していないオプションが渡された場合
-            printf("Usage: %s [-f] [-g] [-h argment] arg1 ...\n", argv[0]);
-            break;
+NAME
+       tee - read from standard input and write to standard output and files
+bin101@bin101-Inspiron-16-5635:~/code/LinuxProgrammingInterface/sec04/prob1$ ./a.out output.txt <input.txt
+TEE(1)                                                                                             User Commands                                                                                            TEE(1)
+
+NAME
+       tee - read from standard input and write to standard output and files
+
+output.txtは上書きされ、output_a.txtは追記されていることを確かめた
+*/
+
+int main(int argc,char *argv[]){
+
+    int opt;
+    int is_a=0;
+    while((opt=getopt(argc,argv,"a"))!=-1){
+        switch(opt){
+            case 'a':
+                printf("option a\n");
+                is_a=1;
+                break;
+            default:
+                perror("default");
+                exit(1);
         }
     }
-
-    // オプション以外の引数を出力する
-    char *file_name = argv[optind];
-    printf("optind = %s\n", file_name);
-    int fd = -1;
-    if (ex_a == 0)
-    {
-        fd = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+    char *file_path=argv[optind];
+    int flag=0;
+    if(is_a){
+        flag=(O_WRONLY|O_CREAT|O_APPEND);
+    }else{
+        flag=(O_WRONLY|O_CREAT|O_TRUNC);
     }
-    else
-    {
-        fd = open(file_name, O_WRONLY | O_CREAT | O_APPEND, 0777);
-    }
+    int fd=open(file_path,flag,S_IWUSR|S_IRUSR);
 
-    // 標準入力から最大100文字読み取る
-    const int BUFFER_SIZE = 101;
-    char buffer[BUFFER_SIZE];
-    ssize_t numRead = read(STDIN_FILENO, buffer, BUFFER_SIZE - 1);
-    buffer[numRead] = '\0';
-    write(STDOUT_FILENO, buffer, numRead);
-    write(fd, buffer, numRead);
+    const int size=10000;
+    char buffer[size];
+    ssize_t numRead=read(STDIN_FILENO,buffer,size);
+    write(STDOUT_FILENO,buffer,numRead);
+    write(fd,buffer,numRead);
 
     close(fd);
-
-    return 0;
 }

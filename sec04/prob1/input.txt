@@ -1,0 +1,4 @@
+TEE(1)                                                                                             User Commands                                                                                            TEE(1)
+
+NAME
+       tee - read from standard input and write to standard output and files
