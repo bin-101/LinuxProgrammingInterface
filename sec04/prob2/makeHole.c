@@ -8,10 +8,20 @@
 #include <stdint.h>
 #include <errno.h>
 
+/*
+実行結果
+bin101@bin101-Inspiron-16-5635:~/code/LinuxProgrammingInterface/sec04/prob2$ ./hole
+offset: 10000002
+offset: 10000004
+offset: 0
+offset: 4096
+offset: 9998336
+*/
+
 int main(int argc, char *argv[]) {
 
     //ファイルを作成
-    int fd = open("test.txt", O_WRONLY | O_CREAT | O_TRUNC, 0777);
+    int fd = open("test.txt", O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR|S_IWUSR);
 
     const int size=2;
     // バッファを作成
@@ -30,13 +40,11 @@ int main(int argc, char *argv[]) {
     {
         int fd = open("test.txt", O_RDONLY);
         //ファイルホールができているか確認
-        lseek(fd, 0, SEEK_SET);
         printf("offset: %ld\n", lseek(fd, 0, SEEK_CUR)); // 0
         int now_offset=lseek(fd, 0, SEEK_HOLE);
         printf("offset: %d\n", now_offset); // 4096
         lseek(fd, now_offset, SEEK_DATA);
-        printf("offset: %ld\n", lseek(fd, 0, SEEK_CUR));  //9998336
-        printf("errno: %d\n", errno); // 0
+        printf("offset: %ld\n", lseek(fd, 0, SEEK_CUR));  // 9998336 (=4096*2441)
         close(fd);
     }
     char buffer3[1000000];
