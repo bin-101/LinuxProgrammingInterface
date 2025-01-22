@@ -9,7 +9,7 @@
 int main(int argc, char *argv[])
 {
     char *file="test.txt";
-    int fd1=open(file,O_RDWR|O_CREAT|O_TRUNC,S_IRUSR|S_IWUSR); //オーナ読み取り許可、オーナ書き込み許可
+    int fd1=open(file,O_RDWR|O_CREAT|O_TRUNC,S_IRUSR|S_IWUSR);
     int fd2=dup(fd1);
     int fd3=open(file,O_RDWR);
 
