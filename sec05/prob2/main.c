@@ -4,42 +4,32 @@
 #include <fcntl.h>
 
 /*
-fd=open("test.txt", O_WRONLY | O_APPEND);
-lseek(fd, 0, SEEK_SET);
-- 問題文の通り
-- abcdefghijklmnopqrstuvwxyzxy
-
-fd=open("test.txt", O_WRONLY);
-lseek(fd, 0, SEEK_SET);
-- xycdefghijklmnopqrstuvwxyz
-
-fd=open("test.txt", O_WRONLY | O_APPEND);
-lseek(fd, x, SEEK_SET);
-- x=10,100でも下の出力になった
-- abcdefghijklmnopqrstuvwxyzxy
-
 理由
-O_APPENDを指定すると、末尾への移動と書き込みをアトミックに行うため。
+O_APPENDを指定すると、ファイルオフセットの末尾への移動と書き込みをアトミックに行うため。
 */
 
 int main(int argc, char *argv[])
 {
     //a-zまでの文字が書き込まれたファイルを作成
     const int SIZE=26;
-    char buffer[SIZE+1];
+    char buffer[SIZE];
     for (int i=0; i<SIZE; i++){
         buffer[i]='a'+i;
     }
-    buffer[SIZE]='\0';
-    int fd=open("test.txt", O_WRONLY | O_CREAT | O_TRUNC, 0777);
-    write(fd, buffer, SIZE);
-    close(fd);
+    int fd1=open("test1.txt", O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR|S_IWUSR);
+    int fd2=open("test2.txt", O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR|S_IWUSR);
+    write(fd1, buffer, SIZE);
+    write(fd2, buffer, SIZE);
+    close(fd1);
+    close(fd2);
 
-    fd=open("test.txt", O_WRONLY | O_APPEND);
-    lseek(fd, 0, SEEK_SET);
-    char buffer2[3]={'x','y','\0'};
-    write(fd, buffer2, 2);
-    close(fd);
+    int fd_normal=open("test1.txt", O_WRONLY);
+    int fd_append=open("test2.txt", O_WRONLY | O_APPEND);
+    char buffer2[]={'x','y'};
+    write(fd_normal, buffer2, 2);
+    write(fd_append, buffer2, 2);
+    close(fd_normal);
+    close(fd_append);
 
     return 0;
 }
