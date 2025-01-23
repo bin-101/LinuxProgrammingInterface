@@ -8,11 +8,7 @@
 
 /*
 実行結果
-test.txt
-fd2
-fd1
-
-標準出力
+bin101@bin101-Inspiron-16-5635:~/code/LinuxProgrammingInterface/sec05/prob5$ ./a.out
 fd1=3
 fd2=4
 flag1=32770
