@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 /*
 以下のように出力される。
@@ -23,6 +24,7 @@ int mydup(int oldfd){
 
 int mydup2(int oldfd,int newfd){
     if(fcntl(oldfd, F_GETFL) == -1){ //flagを返す。oldfdが有効ではない場合、エラーになり-1を返す
+        errno=EBADF;
         return -1;
     }
     if(oldfd == newfd){
