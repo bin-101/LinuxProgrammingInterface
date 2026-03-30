@@ -1,0 +1,21 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "5-8: pread()",
+  "steps": [
+    {
+      "file": "linux/fs/read_write.c",
+      "description": "## pread() システムコールのエントリーポイント\n\n`SYSCALL_DEFINE4` は引数4つのシステムコールを定義するマクロ。\n中身は `ksys_pread64()` を呼ぶだけ。",
+      "line": 770
+    },
+    {
+      "file": "linux/fs/read_write.c",
+      "description": "## CLASS(fd, f)(fd)\n\n`struct fd` 型の変数 `f` の宣言。",
+      "line": 760
+    },
+    {
+      "file": "linux/fs/read_write.c",
+      "description": "## vfs_read()の実行\n\nread()とは以下が異なる。\n\n- vfs_read()の引数に、引数として与えられたposを使う（read()はf_posを使用）\n- f_posの更新を行わない。",
+      "line": 765
+    }
+  ]
+}

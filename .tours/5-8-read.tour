@@ -1,0 +1,51 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "5-8: read()",
+  "steps": [
+    {
+      "file": "linux/fs/read_write.c",
+      "line": 724,
+      "description": "## read() システムコールのエントリーポイント\n\n`SYSCALL_DEFINE3` は引数3つのシステムコールを定義するマクロ。\n中身は `ksys_read()` を呼ぶだけ。"
+    },
+    {
+      "file": "linux/fs/read_write.c",
+      "line": 706,
+      "description": "## ksys_read() の実装"
+    },
+    {
+      "file": "linux/fs/read_write.c",
+      "line": 708,
+      "description": "## CLASS(fd_pos, f)(fd)\n\n`struct fd` 型の変数 `f` の宣言。"
+    },
+    {
+      "file": "linux/fs/read_write.c",
+      "description": "## loff_t pos, *ppos = file_ppos(fd_file(f));\nファイルオフセットをpposに代入",
+      "line": 712
+    },
+    {
+      "file": "linux/include/linux/file.h",
+      "description": "## #define fd_file(f) ((struct file *)((f).word & ~(FDPUT_FPUT|FDPUT_POS_UNLOCK)))\n\nstruct fd fから struct file * を取り出すマクロ",
+      "line": 44
+    },
+    {
+      "file": "linux/fs/read_write.c",
+      "description": "## file_pposの宣言\n\nストリームではない場合、file->f_posを返す",
+      "line": 701
+    },
+    {
+      "file": "linux/fs/read_write.c",
+      "description": "## ポインタpposの向き先をposに変更\n\nこのようにすることで、ppos(f->f_posを指すポインタ)が中途半端に更新されることを防ぐ",
+      "line": 713
+    },
+    {
+      "file": "linux/fs/read_write.c",
+      "description": "## vfs_read()の実行",
+      "line": 717
+    },
+    {
+      "file": "linux/fs/read_write.c",
+      "description": "## f_posの更新\n\n成功した場合、f_posを更新する",
+      "line": 719
+    }
+  ]
+}
