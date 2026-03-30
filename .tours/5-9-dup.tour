@@ -1,0 +1,116 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "5-9: dup()",
+  "steps": [
+    {
+      "file": "linux/fs/file.c",
+      "description": "## dup() システムコールのエントリーポイント\n\n`SYSCALL_DEFINE1` は引数1つのシステムコールを定義するマクロ。\n引数は元のfd番号 fildes のみ。",
+      "line": 1483
+    },
+    {
+      "file": "linux/fs/file.c",
+      "description": "## struct file* の取得\n\n元のfd番号からstruct file*を取得する。",
+      "line": 1486
+    },
+    {
+      "file": "linux/fs/file.c",
+      "description": "## struct file *fget_raw(unsigned int fd)\n\n__fget(fd, 0)を返す。",
+      "line": 1119
+    },
+    {
+      "file": "linux/fs/file.c",
+      "description": "## struct file *__fget(unsigned int fd, fmode_t mask)\n\ncurrent: 現在のプロセス\n\nfiles: files_struct型はプロセスによってオープンされているファイルを表す。\n\n(詳解Linuxカーネルp508参照)",
+      "line": 1108
+    },
+    {
+      "file": "linux/fs/file.c",
+      "description": "## get_unused_fd_flags(0); の実行\n\n使用していないファイルディスクリプタのうち、最小のものをretに代入する。",
+      "line": 1489
+    },
+    {
+      "file": "linux/fs/file.c",
+      "description": "## int get_unused_fd_flags(unsigned flags)\n\n__get_unused_fd_flags(0, rlimit(RLIMIT_NOFILE)); を返す",
+      "line": 620
+    },
+    {
+      "file": "linux/fs/file.c",
+      "description": "## int __get_unused_fd_flags(unsigned flags, unsigned long nofile)\n\nalloc_fd(0, rlimit(RLIMIT_NOFILE), 0); を返す",
+      "line": 615
+    },
+    {
+      "file": "linux/fs/file.c",
+      "description": "## int alloc_fd(unsigned start, unsigned end, unsigned flags)\n\ncurrent: 現在のプロセス\n\nfiles: files_struct型はプロセスによってオープンされているファイルを表す。\n\n(詳解Linuxカーネルp508参照)",
+      "line": 572,
+      "selection": {
+        "start": {
+          "line": 3,
+          "character": 1
+        },
+        "end": {
+          "line": 5,
+          "character": 20
+        }
+      }
+    },
+    {
+      "file": "linux/include/linux/fdtable.h",
+      "description": "## files_struct\n\nfiles_struct型の宣言。\n\nfdtable.fd はfile*型の配列である。配列のインデックスはファイルディスクリプタに一致する。\n\nnext_fd: これまで割り当てられたファイルディスクリプタの最大値+1 (詳解Linuxカーネルp510)",
+      "line": 38
+    },
+    {
+      "file": "linux/fs/file.c",
+      "description": "## おそらく、start(今回は0)以上の最小の空きbitをfdに代入",
+      "line": 585
+    },
+    {
+      "file": "linux/fs/file.c",
+      "description": "## unsigned int find_next_fd(struct fdtable *fdt, unsigned int start)",
+      "line": 544
+    },
+    {
+      "file": "linux/fs/file.c",
+      "description": "## files->next_fdの更新\n\nnext_fd: これまで割り当てられたファイルディスクリプタの最大値+1 (詳解Linuxカーネルp510)",
+      "line": 604
+    },
+    {
+      "file": "linux/fs/file.c",
+      "description": "## bitをセットする。\n\nおそらくここの操作がコメントの`mark it busy`に対応する",
+      "line": 606
+    },
+    {
+      "file": "linux/fs/file.c",
+      "description": "## void __set_open_fd(unsigned int fd, struct fdtable *fdt, bool set)\n\n以下を行う。おそらく高速化のためにテーブルが二重構造になっている。\n- fdt->open_fds の fd のビットを立てる\n- fdt->open_fdsのビットが全て立った場合、 fdt->full_fds_bits の fd/BITS_PER_LONG のビットを立てる",
+      "line": 333
+    },
+    {
+      "file": "linux/fs/file.c",
+      "description": "## ファイルディスクリプタretにfileをインストール",
+      "line": 1491
+    },
+    {
+      "file": "linux/fs/file.c",
+      "description": "## void fd_install(unsigned int fd, struct file *file)\n\n",
+      "line": 680
+    },
+    {
+      "file": "linux/fs/file.c",
+      "description": "## fdtにfiles->fdtを代入\n\nRCU:　高速な同期機構。参考：https://zenn.dev/labbase_sano/articles/c690f9e9539bf4",
+      "line": 696
+    },
+    {
+      "file": "linux/fs/file.c",
+      "description": "## fdt->fd[fd] に fileをassignする",
+      "line": 698,
+      "selection": {
+        "start": {
+          "line": 698,
+          "character": 21
+        },
+        "end": {
+          "line": 698,
+          "character": 32
+        }
+      }
+    }
+  ]
+}
