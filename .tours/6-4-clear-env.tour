@@ -1,0 +1,26 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "6-4-clear-env",
+  "steps": [
+    {
+      "file": "glibc/stdlib/setenv.c",
+      "description": "## clearenv(void) の定義",
+      "line": 362
+    },
+    {
+      "file": "glibc/stdlib/setenv.c",
+      "description": "## start_environ に__environ を代入",
+      "line": 365
+    },
+    {
+      "file": "glibc/stdlib/setenv.c",
+      "description": "## __environとenvironは同じ",
+      "line": 45
+    },
+    {
+      "file": "glibc/stdlib/setenv.c",
+      "description": "## __environをNULLに変更",
+      "line": 378
+    }
+  ]
+}
