@@ -1,0 +1,31 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "6-5-getpid",
+  "steps": [
+    {
+      "file": "linux/Documentation/filesystems/vfs.rst",
+      "description": "## `struct inode_operations`の`get_link`\n> called by the VFS to follow a symbolic link to the inode it points to.\n\nとかかれており、シンボリック先の解決に用いられる",
+      "line": 541
+    },
+    {
+      "file": "linux/fs/proc/self.c",
+      "description": "## proc_self_inode_operations でget_linkにproc_self_get_linkを代入",
+      "line": 32
+    },
+    {
+      "file": "linux/fs/proc/self.c",
+      "description": "## proc_self_get_link()\n- `struct pid_namespace *ns = proc_pid_ns(inode->i_sb);`: 名前空間を取得\n- `pid_t tgid = task_tgid_nr_ns(current, ns);`\n",
+      "line": 17
+    },
+    {
+      "file": "linux/include/linux/pid.h",
+      "description": "## task_tgid_nr_ns(current, ns);\n\n`return __task_pid_nr_ns(tsk, PIDTYPE_TGID, ns);`: get_pid()と同じ",
+      "line": 293
+    },
+    {
+      "file": "linux/fs/proc/self.c",
+      "description": "# 文字列nameにtgidをセット\n1. `name = kmalloc(10 + 1, dentry ? GFP_KERNEL : GFP_ATOMIC);`: サイズ確保\n2. `sprintf(name, \"%u\", tgid);`: tgidをセット",
+      "line": 26
+    }
+  ]
+}

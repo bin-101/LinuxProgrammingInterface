@@ -1,0 +1,36 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "6-5-getpid",
+  "steps": [
+    {
+      "file": "linux/kernel/sys.c",
+      "description": "## getpid() システムコールのエントリーポイント\n\n`SYSCALL_DEFINE0` は引数がないシステムコールを定義するマクロ。\n\nコメントにtgid(thread group id)を返すと書かれている。pidはLinux内部ではスレッドごとのIDである。",
+      "line": 1002
+    },
+    {
+      "file": "linux/include/linux/pid.h",
+      "description": "## task_tgid_vnr()\n\n`return __task_pid_nr_ns(current, PIDTYPE_TGID, NULL);`",
+      "line": 299
+    },
+    {
+      "file": "linux/kernel/pid.c",
+      "description": "## __task_pid_nr_ns(current, PIDTYPE_TGID, NULL)\n\n1. `ns = task_active_pid_ns(current);`: 名前空間を取得\n2. `nr = pid_nr_ns(rcu_dereference(*task_pid_ptr(current, PIDTYPE_TGID)), ns);`",
+      "line": 565,
+      "selection": {
+        "start": {
+          "line": 561,
+          "character": 2
+        },
+        "end": {
+          "line": 561,
+          "character": 65
+        }
+      }
+    },
+    {
+      "file": "linux/kernel/pid.c",
+      "description": "## task_pid_ptr(current, PIDTYPE_TGID)\n\n`return &task->signal->pids[type];`",
+      "line": 378
+    }
+  ]
+}
