@@ -3,3 +3,5 @@
 ## 問題
 
 Linux カーネルのソースコードを読んで、`/proc/sys/kernel/pid_max` に書き込んだ値がカーネルに反映されるまでの仕組みを確認しなさい。
+
+[コードツアー: 12-5-proc-pid_max](../../.tours/12-5-proc-pid_max.tour)
