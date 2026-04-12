@@ -1,0 +1,41 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "12-4-proc-fd",
+  "steps": [
+    {
+      "file": "linux/fs/proc/base.c",
+      "description": "## /proc/PID 下に存在するディレクトリの定義\nproc_fd_operations をf_opとして登録",
+      "line": 3314
+    },
+    {
+      "file": "linux/fs/proc/fd.c",
+      "description": "## iterate_sharedにproc_fd_iterateを登録",
+      "line": 317
+    },
+    {
+      "file": "linux/Documentation/filesystems/vfs.rst",
+      "description": "## iterate_shared の説明",
+      "line": 1073
+    },
+    {
+      "file": "linux/fs/proc/fd.c",
+      "description": "## proc_fd_iterate()はproc_readfd_common()を返す",
+      "line": 312
+    },
+    {
+      "file": "linux/fs/proc/fd.c",
+      "description": "## 対応するtask_struct(プロセスディスクリプタ)を取得",
+      "line": 251
+    },
+    {
+      "file": "linux/fs/proc/fd.c",
+      "description": "## f = fget_task_next(p, &fd);",
+      "line": 266
+    },
+    {
+      "file": "linux/fs/file.c",
+      "description": "## fget_task_next()\n\nfdを引数ret_fdから探して、オープンされている最小のfdでbreakしてreturn",
+      "line": 1155
+    }
+  ]
+}
