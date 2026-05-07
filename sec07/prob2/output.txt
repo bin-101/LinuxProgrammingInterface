@@ -1,0 +1,71 @@
+warmup...
+
+=== initial ===
+base sbrk(0):    0x5c8f79415000
+current sbrk(0): 0x5c8f79415000
+heap diff:       0 bytes
+free_list:
+  empty
+
+追加1: p1=0x5c8f79415010
+
+=== after malloc p1 ===
+base sbrk(0):    0x5c8f79415000
+current sbrk(0): 0x5c8f79425010
+heap diff:       65552 bytes
+free_list:
+  empty
+
+追加2: p2=0x5c8f79425020
+
+=== after malloc p2 ===
+base sbrk(0):    0x5c8f79415000
+current sbrk(0): 0x5c8f79435020
+heap diff:       131104 bytes
+free_list:
+  empty
+
+追加3: p3=0x5c8f79435030
+
+=== after malloc p3 ===
+base sbrk(0):    0x5c8f79415000
+current sbrk(0): 0x5c8f79445030
+heap diff:       196656 bytes
+free_list:
+  empty
+
+削除3: free(p3)
+
+=== after free p3 ===
+base sbrk(0):    0x5c8f79415000
+current sbrk(0): 0x5c8f79445030
+heap diff:       196656 bytes
+free_list:
+  [0] addr=0x5c8f79435020, end=0x5c8f79445030, size=65536, total=65552, prev=(nil), next=(nil)
+
+削除2: free(p2)
+
+=== after free p2 ===
+base sbrk(0):    0x5c8f79415000
+current sbrk(0): 0x5c8f79425010
+heap diff:       65552 bytes
+free_list:
+  empty
+
+削除1: free(p1)
+
+=== after free p1 ===
+base sbrk(0):    0x5c8f79415000
+current sbrk(0): 0x5c8f79425010
+heap diff:       65552 bytes
+free_list:
+  [0] addr=0x5c8f79415000, end=0x5c8f79425010, size=65536, total=65552, prev=(nil), next=(nil)
+
+追加4: p4=0x5c8f79415010
+
+=== after malloc p4 ===
+base sbrk(0):    0x5c8f79415000
+current sbrk(0): 0x5c8f79425010
+heap diff:       65552 bytes
+free_list:
+  [0] addr=0x5c8f7941d010, end=0x5c8f79425010, size=32752, total=32768, prev=(nil), next=(nil)
