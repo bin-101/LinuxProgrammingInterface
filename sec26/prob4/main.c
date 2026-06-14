@@ -16,18 +16,14 @@
 /*
 実行結果
 bin101@bin101-Inspiron-16-5635:~/code/LinuxProgrammingInterface/sec26/prob4$ ./a.out
-Parent PID=45937
-Child (PID=45938) exiting
+Parent PID=70479
+Child (PID=70480) exiting
 Signal 17 (Child exited) received
-  45937 pts/0    00:00:00 a.out
-  45938 pts/0    00:00:00 a.out <defunct>
-Signal 17 (Child exited) received
-After sending SIGKILL to zombie (PID=45938):
-  45937 pts/0    00:00:00 a.out
-  45938 pts/0    00:00:00 a.out <defunct>
-Signal 17 (Child exited) received
-
-なぜ、signal 17を3回受信するのかはわからず。system(cmd)を増やすとsignal 17を受信する回数も同じ数だけ増えた。
+  70479 pts/2    00:00:00 a.out
+  70480 pts/2    00:00:00 a.out
+After sending SIGKILL to zombie (PID=70480):
+  70479 pts/2    00:00:00 a.out
+  70480 pts/2    00:00:00 a.out
 */
 
 #define CMD_SIZE 200
@@ -35,6 +31,36 @@ Signal 17 (Child exited) received
 void handler(int sig){
     printf("Signal %d (%s) received\n",sig,strsignal(sig));
 }
+
+
+void wait_signal(int signal_id, void (*handler)(int)){
+    struct sigaction sa;
+    sa.sa_handler=handler;
+    sa.sa_flags=0;
+    sigemptyset(&sa.sa_mask);
+    if(sigaction(signal_id, &sa, NULL)==-1){
+        perror("sigaction");
+        exit(EXIT_FAILURE);
+    }
+    // signal_idのシグナルが来るまで待つ sigsuspend
+    sigset_t mask;
+    sigfillset(&mask);
+    sigdelset(&mask, signal_id);
+    if(sigsuspend(&mask)==-1 && errno!=EINTR){
+        perror("sigsuspend");
+        exit(EXIT_FAILURE);
+    }
+}
+
+void block_all_signals(){
+    sigset_t mask;
+    sigfillset(&mask);
+    if(sigprocmask(SIG_SETMASK, &mask, NULL)==-1){
+        perror("sigprocmask");
+        exit(EXIT_FAILURE);
+    }   
+}
+
 
 int main(int argc,char *argv[]){
 
@@ -45,20 +71,16 @@ int main(int argc,char *argv[]){
 
     pid_t childPid;
 
-    struct sigaction sa;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags=0;
-    sa.sa_handler=handler;
-    sigaction(SIGCHLD,&sa,NULL);
+    block_all_signals();
 
     switch(childPid=fork()){
         case -1:
             printf("fork: %s\n",strerror(errno));
-        case 0:
+        case 0: // 子プロセス
             printf("Child (PID=%ld) exiting\n",(long)getpid());
             _exit(EXIT_SUCCESS);
-        default:
-            pause(); // SIGCHILDを受信するまで待つ
+        default: // 親プロセス
+            wait_signal(SIGCHLD, handler); // SIGCHLDを受信するまで待つ
             char cmd[CMD_SIZE];
             snprintf(cmd,CMD_SIZE,"ps | grep %s",basename(argv[0]));
             system(cmd);
@@ -66,7 +88,7 @@ int main(int argc,char *argv[]){
             if(kill(childPid,SIGKILL)==-1){
                 printf("kill: %s\n",strerror(errno));
             }
-            sleep(3); // ここを消すのはおそらく無理？
+            sleep(3);
             printf("After sending SIGKILL to zombie (PID=%ld):\n",(long)childPid);
             system(cmd);
     }
