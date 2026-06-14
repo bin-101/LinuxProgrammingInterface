@@ -1,0 +1,23 @@
+#define _GNU_SOURCE
+#include <pwd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/wait.h>
+#include <dirent.h>
+#include <string.h>
+#include <errno.h>
+
+
+int main(){
+    switch(fork()){
+        case 0:
+            sleep(10);
+            printf("%d\n", getpid());
+            printf("%d\n", getppid());
+            exit(EXIT_SUCCESS);
+        default:
+            exit(EXIT_SUCCESS);
+    }
+}
