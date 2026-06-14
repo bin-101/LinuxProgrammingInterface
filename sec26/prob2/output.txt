@@ -1,0 +1,13 @@
+Parent process started PID: 62882
+Child process started PID: 62883
+Grand child process started PID: 62884
+Grand child executed prctl
+Child process received Signal 10 (User defined signal 1)
+Child process exiting
+Grand child process received Signal 10 (User defined signal 1)
+Child process exited
+getppid(): 2651
+Parent process received Signal 10 (User defined signal 1)
+Parent process waiting for child to exit
+Child process died
+getppid(): 2651
