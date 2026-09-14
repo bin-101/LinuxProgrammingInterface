@@ -61,7 +61,7 @@ int main(int argc,char *argv[]){
         }
         printf("seqNum: %d\n",seqNum);
     }else{
-        write(backupFd,&seqNum,sizeof(seqNum)); // 書き込み前に終了してしまうとデータが書き込まれない(本当はシグナルマスクとsigsuspendを使うべき)
+        write(backupFd,&seqNum,sizeof(seqNum)); // 書き込み前に終了してしまうとデータが書き込まれない。本当は、起動時に空ファイルかどうかを検査するべき
     }
 
     umask(0);
