@@ -27,10 +27,11 @@ fafaddddddd
 int main() {
     int sfd=socket(AF_UNIX, SOCK_STREAM, 0);
 
-    if(remove(SOCK_PATH)==-1 && errno!=ENOENT){ // ENOENT: No such file or directory
-        perror("remove");
-        return 1;
-    }
+    // 抽象ソケット名前空間を使った場合、ソケットクローズ時に自動的に削除する
+    // if(remove(SOCK_PATH)==-1 && errno!=ENOENT){ // ENOENT: No such file or directory
+    //     perror("remove");
+    //     return 1;
+    // }
 
     struct sockaddr_un addr;
     memset(&addr, 0, sizeof(struct sockaddr_un));
