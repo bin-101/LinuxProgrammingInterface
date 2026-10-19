@@ -87,10 +87,10 @@ int main(int argc,char *argv[]){
     sa.sa_flags=SA_RESTART;
     sa.sa_handler=grimReaper;
 
-    sigset_t mask;
-    sigemptyset(&mask);
-    sigaddset(&mask,SIGCHLD);
-    sigprocmask(SIG_BLOCK,&mask,NULL);
+    sigset_t child_mask;
+    sigemptyset(&child_mask);
+    sigaddset(&child_mask,SIGCHLD);
+    sigprocmask(SIG_BLOCK,&child_mask,NULL);
 
     if(sigaction(SIGCHLD,&sa,NULL)==-1){
         syslog(LOG_ERR,"sigaction failed: %s",strerror(errno));
@@ -103,11 +103,16 @@ int main(int argc,char *argv[]){
         exit(EXIT_FAILURE);
     }
 
+    sigset_t emptyMask;
+    sigemptyset(&emptyMask);
     while(TRUE){
+        // 以下の理由から、基本的にsig_childをブロックする
+        // - child_num++の計算時にシグナルを受け取ると、child_numの値が正しくなくなる可能性がある
+        // - while(child_num>=MAX_CHILD_NUM)の計算直後にシグナルを受け取ると、sigsuspend()が実行される前に、child_numが減少してしまい、sigsuspend()が永遠に待機してしまう可能性がある
+        // - accept()中にシグナルを受け取ると、accept()が中断される可能性がある
+        sigprocmask(SIG_BLOCK,&child_mask,NULL);
         while(child_num>=MAX_CHILD_NUM){
-            sigset_t emptyMask;
-            sigemptyset(&emptyMask); // waitpid()をずっと実行する方法もあるが、sigsuspend()を使うことで、シグナルを受け取るまでプロセスを停止させることができる(多分)
-            sigsuspend(&emptyMask); // child_num++の計算時にシグナルを受け取ると、child_numの値がおかしくなるため、ここで必ずシグナルを受け取る
+            sigsuspend(&emptyMask); 
         }
 
         int cfd=accept(lfd,NULL,NULL);
@@ -116,6 +121,7 @@ int main(int argc,char *argv[]){
             exit(EXIT_FAILURE);
         }
 
+        
         switch(fork()){
             case -1:
                 syslog(LOG_ERR,"Can't create child (%s)",strerror(errno));
@@ -130,5 +136,6 @@ int main(int argc,char *argv[]){
                 close(cfd);
                 break;
         }
+        sigprocmask(SIG_UNBLOCK,&child_mask,NULL);
     }
 }
